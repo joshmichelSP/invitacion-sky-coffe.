@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Volamos por un café? ✈️☕</title>
+  <style>
+    :root {
+      --sky1: #dff4ff;
+      --sky2: #f8fbff;
+      --accent: #1f6feb;
+      --accent2: #ff7aa2;
+      --dark: #14304d;
+      --soft: rgba(255,255,255,0.75);
+      --shadow: 0 18px 45px rgba(20,48,77,0.18);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--dark);
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 18%, rgba(255,255,255,0.95) 0 36px, transparent 37px),
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.95) 0 28px, transparent 29px),
+        radial-gradient(circle at 72% 16%, rgba(255,255,255,0.95) 0 36px, transparent 37px),
+        radial-gradient(circle at 78% 18%, rgba(255,255,255,0.95) 0 24px, transparent 25px),
+        linear-gradient(180deg, var(--sky1), var(--sky2) 65%, #fff7ef 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+    .plane-trail {
+      position: absolute;
+      top: 70px;
+      left: -140px;
+      font-size: 3rem;
+      animation: flyAcross 15s linear infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.10));
+      z-index: 1;
+    }
+    .plane-trail::after {
+      content: "";
+      position: absolute;
+      right: 95%;
+      top: 48%;
+      width: 180px;
+      height: 3px;
+      border-top: 3px dashed rgba(31,111,235,0.45);
+      transform: translateY(-50%);
+    }
+    @keyframes flyAcross {
+      0% { transform: translateX(0) translateY(0) rotate(6deg); }
+      25% { transform: translateX(28vw) translateY(8px) rotate(8deg); }
+      50% { transform: translateX(58vw) translateY(-6px) rotate(3deg); }
+      75% { transform: translateX(86vw) translateY(8px) rotate(7deg); }
+      100% { transform: translateX(120vw) translateY(-4px) rotate(5deg); }
+    }
+    .card {
+      position: relative;
+      z-index: 5;
+      width: min(92vw, 640px);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.9);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 28px 24px 26px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .badge {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      background: rgba(31,111,235,0.1);
+      color: var(--accent);
+      border: 1px solid rgba(31,111,235,0.15);
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.94rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.05;
+      margin: 6px 0 14px;
+    }
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      line-height: 1.6;
+      margin: 0 auto 16px;
+      max-width: 520px;
+      color: #36506c;
+    }
+    .proposal {
+      background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(232,244,255,0.75));
+      border: 1px solid rgba(31,111,235,0.12);
+      border-radius: 22px;
+      padding: 18px;
+      margin: 18px 0 22px;
+      text-align: left;
+    }
+    .proposal strong { color: var(--accent); }
+    .proposal .row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 10px 0;
+      font-size: 1rem;
+    }
+    .proposal .emoji { width: 30px; flex: 0 0 30px; font-size: 1.2rem; text-align: center; }
+    .airport-note {
+      font-size: 0.95rem;
+      color: #4c647a;
+      margin-top: 6px;
+    }
+    .buttons-wrap {
+      position: relative;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 16px 30px;
+      font-weight: 800;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease, opacity .22s ease;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.98); }
+    #btn-si {
+      background: linear-gradient(135deg, var(--accent2), #ff5d8f);
+      color: white;
+      z-index: 6;
+      min-width: 145px;
+    }
+    #btn-no {
+      background: white;
+      color: #516579;
+      border: 2px solid #d9e6f1;
+      min-width: 130px;
+      position: relative;
+      margin-left: 12px;
+      z-index: 20;
+    }
+    .helper {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: #59718a;
+    }
+    .hidden { display: none; }
+    .success {
+      padding-top: 30px;
+      padding-bottom: 34px;
+    }
+    .success h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin: 12px 0 10px;
+    }
+    .boarding {
+      margin: 20px auto 0;
+      max-width: 530px;
+      background: linear-gradient(135deg, #ffffff, #f4f9ff);
+      border: 2px dashed rgba(31,111,235,0.25);
+      border-radius: 22px;
+      padding: 18px;
+      text-align: left;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.7);
+    }
+    .boarding-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+    }
+    .cell {
+      background: rgba(31,111,235,0.06);
+      border-radius: 16px;
+      padding: 12px;
+    }
+    .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #69829a;
+      margin-bottom: 4px;
+    }
+    .value {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #16314d;
+      line-height: 1.35;
+    }
+    .big-emoji {
+      font-size: 4rem;
+      line-height: 1;
+      animation: bob 2.2s ease-in-out infinite;
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+      display: none;
+    }
+    .confetti span {
+      position: absolute;
+      top: -20px;
+      width: 12px;
+      height: 18px;
+      opacity: 0.95;
+      animation: fall linear forwards;
+      border-radius: 3px;
+    }
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 1;
+      }
+    }
+    @media (max-width: 560px) {
+      .card { padding: 22px 16px 20px; }
+      .proposal { padding: 14px; }
+      .buttons-wrap { min-height: 180px; }
+      #btn-no { margin-left: 0; }
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    /* Elección de fecha — solamente del 11 al 17 de octubre de 2026 */
+    .card { max-height: calc(100dvh - 28px); overflow-y: auto; scrollbar-width: thin; }
+    .date-section {
+      margin: 17px 0 4px;
+      padding: 15px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, #fff8fc, #edf7ff);
+      border: 1px solid rgba(255,122,162,.24);
+    }
+    .date-section h3 { font-size: 1.08rem; margin: 0 0 4px; }
+    .date-section p { font-size: .89rem; color: #59718a; margin: 0 0 13px; line-height: 1.45; }
+    .date-options {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .date-option {
+      border: 1.5px solid #d1e3f2;
+      background: white;
+      padding: 10px 3px;
+      min-width: 0;
+      border-radius: 13px;
+      color: #32526f;
+      font: inherit;
+      cursor: pointer;
+      transition: transform .2s, background .2s, border .2s, box-shadow .2s;
+    }
+    .date-option:hover { transform: translateY(-3px); border-color: var(--accent2); }
+    .date-option[aria-pressed="true"] {
+      background: #ffedf5;
+      border-color: #ff5d8f;
+      color: #ba2155;
+      box-shadow: 0 3px 10px rgba(255,93,143,.16);
+    }
+    .date-day { display: block; font-size: .76rem; margin-bottom: 3px; }
+    .date-number { display: block; font-size: 1.45rem; font-weight: 800; }
+    .date-month { display: block; font-size: .68rem; }
+    .share-choice {
+      margin: 16px auto 0;
+      display: block;
+      background: linear-gradient(135deg, #1f6feb, #419afa);
+      color: white;
+      border: none;
+      padding: 13px 20px;
+      border-radius: 999px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(31,111,235,.18);
+    }
+    .share-choice:disabled { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    .share-hint { font-size: .8rem; margin: 9px 0 0; color: #59718a; }
+    @media (max-width: 560px) {
+      .date-options { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 7px; }
+      .date-option { padding: 7px 3px; }
+      .date-section { padding: 12px; }
+      .success h2 { font-size: 1.8rem; }
+      .success .subtitle { font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="plane-trail">✈️</div>
+
+  <div class="card" id="screen-start">
+    <div class="badge">✈️ Plan de vuelo romántico · ☕ Sky Coffe · 📍 frente al AICM</div>
+    <h1>¿Volamos por un café conmigo?</h1>
+    <p class="subtitle">
+      Tengo una misión importante: invitar a la persona más linda a una salida bonita, juguetona y con vista aviones.
+    </p>
+
+    <div class="proposal">
+      <div class="row"><div class="emoji">☁️</div><div><strong>Destino:</strong> Sky Coffe, la cafetería frente al AICM.</div></div>
+      <div class="row"><div class="emoji">✈️</div><div><strong>Plan:</strong> cafecito, plática rica y ver despegar aviones contigo.</div></div>
+      <div class="row"><div class="emoji">💙</div><div><strong>Motivo:</strong> porque contigo cualquier plan aterriza bonito.</div></div>
+      <div class="airport-note">Prometo llegar con la mejor actitud, conversación bonita y cero turbulencias. 😌</div>
+    </div>
+
+    <div class="buttons-wrap" id="buttons-wrap">
+      <button class="btn" id="btn-si">Sí, vamos ✨</button>
+      <button class="btn" id="btn-no">No 🙈</button>
+    </div>
+    <div class="helper">Tip: si intentas decir que no… puede que ese botón entre en modo despegue. 😏</div>
+  </div>
+
+  <div class="card hidden success" id="screen-success">
+    <div class="big-emoji">✈️☕💖</div>
+    <h2 id="success-title">¡Dijiste que sí! 💖</h2>
+    <p class="subtitle">¡Qué emoción! Solo falta elegir el día para nuestro cafecito con vista a los aviones. Tú decides. ✨</p>
+
+    <section class="date-section" aria-labelledby="date-title">
+      <h3 id="date-title">📅 ¿Qué día te queda mejor?</h3>
+      <p>Escoge uno de estos siete días: del domingo 11 al sábado 17 de octubre. Despegamos a las <strong>12:00 p. m.</strong> ✈️</p>
+      <div class="date-options" id="date-options" role="group" aria-label="Selecciona el día de nuestra cita">
+        <button class="date-option" type="button" data-date="2026-10-11" aria-pressed="false"><span class="date-day">Dom</span><span class="date-number">11</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-12" aria-pressed="false"><span class="date-day">Lun</span><span class="date-number">12</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-13" aria-pressed="false"><span class="date-day">Mar</span><span class="date-number">13</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-14" aria-pressed="false"><span class="date-day">Mié</span><span class="date-number">14</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-15" aria-pressed="false"><span class="date-day">Jue</span><span class="date-number">15</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-16" aria-pressed="false"><span class="date-day">Vie</span><span class="date-number">16</span><span class="date-month">oct</span></button>
+        <button class="date-option" type="button" data-date="2026-10-17" aria-pressed="false"><span class="date-day">Sáb</span><span class="date-number">17</span><span class="date-month">oct</span></button>
+      </div>
+    </section>
+
+    <div class="boarding">
+      <div class="boarding-head">
+        <span>Pase de abordaje emocional</span>
+        <span>SKY COFFE · AICM</span>
+      </div>
+      <div class="grid">
+        <div class="cell"><div class="label">Pasajera VIP</div><div class="value">Tú ✨</div></div>
+        <div class="cell"><div class="label">Ingeniero nervioso</div><div class="value">Yo 😅</div></div>
+        <div class="cell"><div class="label">Destino</div><div class="value">Sky Coffe<br/>frente al AICM</div></div>
+        <div class="cell"><div class="label">Actividad</div><div class="value">Cafecito + plática + ver aviones</div></div>
+        <div class="cell"><div class="label">Estatus</div><div class="value"><a href="https://maps.apple/p/.f_jSdc_TFksCb" target="_blank" rel="noopener noreferrer" style="color:#1f6feb;text-decoration:underline;">📍 Ver dirección en Apple Maps</a></div></div>
+        <div class="cell"><div class="label">Hora y fecha</div><div class="value">12:00 p. m.<br><span id="selected-date">Elige tu día arriba 💌</span></div></div>
+      </div>
+    </div>
+    <button type="button" class="share-choice" id="share-choice" disabled>💌 Avisarle al ingeniero por WhatsApp</button>
+    <p class="share-hint">Al tocarlo podrás compartirle el día que elegiste (no se envía automáticamente).</p>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const btnSi = document.getElementById('btn-si');
+    const btnNo = document.getElementById('btn-no');
+    const wrap = document.getElementById('buttons-wrap');
+    const start = document.getElementById('screen-start');
+    const success = document.getElementById('screen-success');
+    const confetti = document.getElementById('confetti');
+
+    let siScale = 1;
+    let escapeCount = 0;
+
+    function moveNoButton() {
+      const wrapRect = wrap.getBoundingClientRect();
+      const btnRect = btnNo.getBoundingClientRect();
+      const maxLeft = Math.max(0, wrapRect.width - btnRect.width - 8);
+      const maxTop = Math.max(0, wrapRect.height - btnRect.height - 8);
+      const left = Math.random() * maxLeft;
+      const top = Math.random() * maxTop;
+
+      btnNo.style.position = 'absolute';
+      btnNo.style.left = left + 'px';
+      btnNo.style.top = top + 'px';
+
+      escapeCount += 1;
+      siScale = Math.min(2.1, 1 + escapeCount * 0.10);
+      btnSi.style.transform = `scale(${siScale})`;
+      btnSi.style.boxShadow = '0 18px 35px rgba(255,93,143,0.30)';
+      btnSi.textContent = escapeCount > 6 ? 'Siii, vamos 💖' : 'Sí, vamos ✨';
+    }
+
+    btnNo.addEventListener('mouseenter', moveNoButton);
+    btnNo.addEventListener('click', function(e) {
+      e.preventDefault();
+      moveNoButton();
+    });
+    btnNo.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      moveNoButton();
+    }, {passive: false});
+
+    btnSi.addEventListener('click', function() {
+      start.classList.add('hidden');
+      success.classList.remove('hidden');
+      launchConfetti();
+    });
+
+    // Semana disponible: domingo 11 a sábado 17 de octubre de 2026.
+    // No se permiten fechas fuera de esta semana.
+    const dateButtons = Array.from(document.querySelectorAll('.date-option'));
+    const dateText = document.getElementById('selected-date');
+    const shareChoice = document.getElementById('share-choice');
+    const successTitle = document.getElementById('success-title');
+    const dateLabels = {
+      '2026-10-11': 'domingo 11 de octubre de 2026',
+      '2026-10-12': 'lunes 12 de octubre de 2026',
+      '2026-10-13': 'martes 13 de octubre de 2026',
+      '2026-10-14': 'miércoles 14 de octubre de 2026',
+      '2026-10-15': 'jueves 15 de octubre de 2026',
+      '2026-10-16': 'viernes 16 de octubre de 2026',
+      '2026-10-17': 'sábado 17 de octubre de 2026'
+    };
+    let selectedDay = '';
+
+    dateButtons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        selectedDay = button.dataset.date;
+        dateButtons.forEach(function(other) {
+          other.setAttribute('aria-pressed', String(other === button));
+        });
+        dateText.textContent = dateLabels[selectedDay];
+        successTitle.textContent = '¡Ya tenemos fecha! ✈️💗';
+        shareChoice.disabled = false;
+      });
+    });
+
+    shareChoice.addEventListener('click', function() {
+      if (!selectedDay) return;
+      const message = '¡Acepté nuestro plan de vuelo! ✈️☕💖\n'
+        + 'Elegí el ' + dateLabels[selectedDay] + ' a las 12:00 p. m.\n'
+        + 'Nos vemos en Sky Coffe, frente al AICM. 💌\n'
+        + '📍 https://maps.apple/p/.f_jSdc_TFksCb';
+      window.open('https://api.whatsapp.com/send?text=' + encodeURIComponent(message), '_blank', 'noopener,noreferrer');
+    });
+
+    function launchConfetti() {
+      confetti.style.display = 'block';
+      confetti.innerHTML = '';
+      const colors = ['#ff7aa2', '#ffd166', '#7bdff2', '#8ec5ff', '#6ee7b7', '#ffffff'];
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement('span');
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDuration = (Math.random() * 2.8 + 2.2) + 's';
+        piece.style.animationDelay = (Math.random() * 0.8) + 's';
+        piece.style.transform = `translateY(0) rotate(${Math.random() * 360}deg)`;
+        confetti.appendChild(piece);
+      }
+      setTimeout(() => confetti.style.display = 'none', 5200);
+    }
+  </script>
+</body>
+</html>
